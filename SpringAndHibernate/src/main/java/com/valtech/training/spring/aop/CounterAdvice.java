@@ -45,10 +45,10 @@ public class CounterAdvice implements MethodBeforeAdvice{
 	 * target is the object on which this method will be executed
 	 */
 	public void before(Method method, Object[] args, Object target) throws Throwable {
-		for (int i = 0; i < args.length; i++) {
-			int a=(Integer)args[i];
-			args[i]=a%2==0?a:-a;
-		}
+//		for (int i = 0; i < args.length; i++) {
+//			int a=(Integer)args[i];
+//			args[i]=a%2==0?a:-a;
+//		}
 		String methodName = method.getName();
 		System.out.println("Method being called is "+methodName);
 		System.out.println("Arguments is "+ArrayUtils.toString(args));
