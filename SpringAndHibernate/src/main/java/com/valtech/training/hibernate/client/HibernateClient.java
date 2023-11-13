@@ -1,52 +1,65 @@
 package com.valtech.training.hibernate.client;
 
-import java.io.IOException;
+
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.util.Date;
 
-import org.hibernate.*;
+import org.hibernate.HibernateException;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.hibernate.cfg.AnnotationConfiguration;
 
-import com.valtech.training.hibernate.ATMTx;
-import com.valtech.training.hibernate.Account;
-import com.valtech.training.hibernate.Address;
-import com.valtech.training.hibernate.BankAccount;
-import com.valtech.training.hibernate.BankAccountId;
-import com.valtech.training.hibernate.ChequeTx;
-import com.valtech.training.hibernate.Customer;
-import com.valtech.training.hibernate.Employee;
-import com.valtech.training.hibernate.RegAddress;
-import com.valtech.training.hibernate.Registration;
-import com.valtech.training.hibernate.TellerTx;
-import com.valtech.training.hibernate.Tx;
+import com.valtech.training.hibernate.Company;
+import com.valtech.training.hibernate.ProductOrder;
+import com.valtech.training.hibernate.Product;
+import com.valtech.training.hibernate.ProductCustomer;
 
 public class HibernateClient {
     
 	public static void main(String[] args) throws HibernateException, ParseException{
 		DateFormat df=new SimpleDateFormat("dd-MM-yyyy");
      AnnotationConfiguration cfg=new AnnotationConfiguration();
-     cfg.addAnnotatedClass(Employee.class);
-     cfg.addAnnotatedClass(Tx.class).addAnnotatedClass(ChequeTx.class).addAnnotatedClass(TellerTx.class).addAnnotatedClass(ATMTx.class);
-     cfg.addAnnotatedClass(Customer.class).addAnnotatedClass(Address.class).addAnnotatedClass(Account.class);
-     cfg.addAnnotatedClass(Registration.class);
-     cfg.addAnnotatedClass(BankAccount.class);
+//     cfg.addAnnotatedClass(Employee.class);
+//     cfg.addAnnotatedClass(Tx.class).addAnnotatedClass(ChequeTx.class).addAnnotatedClass(TellerTx.class).addAnnotatedClass(ATMTx.class);
+//     cfg.addAnnotatedClass(Customer.class).addAnnotatedClass(Address.class).addAnnotatedClass(Account.class);
+//     cfg.addAnnotatedClass(Registration.class);
+//     cfg.addAnnotatedClass(BankAccount.class);
+      cfg.addAnnotatedClass(Company.class).addAnnotatedClass(Product.class).addAnnotatedClass(ProductCustomer.class).addAnnotatedClass(ProductOrder.class);
      SessionFactory sessFac=cfg.buildSessionFactory();
      Session ses= (Session) sessFac.openSession();
      Transaction tx=(Transaction) ( (org.hibernate.Session) ses).beginTransaction();
      
-    
-     RegAddress regAdd=new RegAddress("5th cross","Blr","12243");
-     Registration reg=new Registration("pradeep","112",123456,regAdd);
-     ses.save(reg);
+     
+    Company c=new Company("Valtech","JP Nagar");
+    Product p1=new Product("Software",12324);
+    Product p2=new Product("Hardware",12324);
+    ses.save(c);
+    ses.save(p1);
+    ses.save(p2);
+    c.addProduct(p1);
+    c.addProduct(p2);
      
      
-     ses.persist(new BankAccount(new BankAccountId("SB",1),30000));
-     
-     BankAccountId id=new BankAccountId("SB",1);
-     BankAccount b=(BankAccount) ses.load(BankAccountId.class, id);
+     ProductCustomer pc=new ProductCustomer("Pradeep","1224211","Raichur");
+     ses.save(pc);
+     ProductOrder po1=new ProductOrder(df.parse("12-12-2023"));
+     ProductOrder po2=new ProductOrder(df.parse("11-12-2023"));
+     ses.save(po1);
+     ses.save(po2);
+     pc.addProductOrder(po1);
+     pc.addProductOrder(po2);
+         
+//     RegAddress regAdd=new RegAddress("5th cross","Blr","12243");
+//     Registration reg=new Registration("pradeep","112",123456,regAdd);
+//     ses.save(reg);
+//     
+//     
+//     ses.persist(new BankAccount(new BankAccountId("SB",1),30000));
+//     
+//     BankAccountId id=new BankAccountId("SB",1);
+//     BankAccount b=(BankAccount) ses.load(BankAccountId.class, id);
 //     Customer cus=new Customer("Abc",23);
 //     ses.save(cus);
 //     Address add=new Address("JP Nagar","Blr",560071);
@@ -84,8 +97,8 @@ public class HibernateClient {
 //     ses.createQuery("from Tx tx").list().forEach(t-> System.out.println(t));
     // ((org.hibernate.Session) ses).persist(new Employee("Abc",df.parse("15-08-1947"),20000,'M',false));
      
-     
-     
+     ses.createQuery("from Company c").list().forEach(t -> System.out.println(t));
+     ses.createQuery("from ProductCustomer c").list().forEach(t -> System.out.println(t));
      tx.commit();
      ses.close();
      sessFac.close();
