@@ -16,44 +16,46 @@ import com.valtech.training.firstspringboot.model.OrderModel;
 import com.valtech.training.firstspringboot.service.OrderService;
 
 @Controller
-@RequestMapping(path ="/orders" )
+@RequestMapping(path = "/orders")
 public class OrderController {
 	@Autowired
 	private OrderService orderService;
-	
-   @GetMapping("/edit")
-   public String editOrder(@RequestParam("id") long id,Model model) {
-	   
-	  model.addAttribute("order",new OrderModel(orderService.getOrder(id)));
-	  return "orders/edit";
-   }
-	
-	@PostMapping(path="/save",params = "cancel")
-	public String cancelEditOrder(Model model) {
-		model.addAttribute("orders",orderService.getAllOrders().stream().map(o->new OrderModel(o)).collect(Collectors.toList()));
-		return "orders/list";
-	}
-	
-	@PostMapping(path = "/save",params = "submit")
-	public String saveOrder(@ModelAttribute OrderModel orderModel,Model model) {
-		
-			orderService.createOrder(orderModel.getOrder());
-		
-    	model.addAttribute("orders",orderService.getAllOrders().stream().map(o->new OrderModel(o)).collect(Collectors.toList()));
-		return "orders/list";
-	}
-	
-	@GetMapping("/new")
-	public String newOrder(Model model) {
-		model.addAttribute("order",new OrderModel());
+
+	@GetMapping("/edit")
+	public String editOrder(@RequestParam("id") long id, Model model) {
+
+		model.addAttribute("order", new OrderModel(orderService.getOrder(id)));
 		return "orders/edit";
 	}
-	
-    @GetMapping("/list")
-	public String listOrders(Model model) {
-    	model.addAttribute("orders",orderService.getAllOrders().stream().map(o->new OrderModel(o)).collect(Collectors.toList()));
+
+	@PostMapping(path = "/save", params = "cancel")
+	public String cancelEditOrder(Model model) {
+		model.addAttribute("orders",
+				orderService.getAllOrders().stream().map(o -> new OrderModel(o)).collect(Collectors.toList()));
 		return "orders/list";
 	}
-    
-    
+
+	@PostMapping(path = "/save", params = "submit")
+	public String saveOrder(@ModelAttribute OrderModel orderModel, Model model) {
+
+		orderService.createOrder(orderModel.getOrder());
+
+		model.addAttribute("orders",
+				orderService.getAllOrders().stream().map(o -> new OrderModel(o)).collect(Collectors.toList()));
+		return "orders/list";
+	}
+
+	@GetMapping("/new")
+	public String newOrder(Model model) {
+		model.addAttribute("order", new OrderModel());
+		return "orders/edit";
+	}
+
+	@GetMapping("/list")
+	public String listOrders(Model model) {
+		model.addAttribute("orders",
+				orderService.getAllOrders().stream().map(o -> new OrderModel(o)).collect(Collectors.toList()));
+		return "orders/list";
+	}
+
 }

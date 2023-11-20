@@ -1,9 +1,11 @@
 package com.valtech.training.firstspringboot.component;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class SimpleInterestImpl implements SimpleInterest {
 	public SimpleInterestImpl() {
-		super();
-		// TODO Auto-generated constructor stub
+		
 	}
 
 	private Arithmetic arithmetic;
