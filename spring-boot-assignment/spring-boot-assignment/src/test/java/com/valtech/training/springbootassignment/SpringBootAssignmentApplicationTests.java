@@ -14,6 +14,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import com.valtech.training.springbootassignment.component.*;
 import com.valtech.training.springbootassignment.controller.HelloController;
 import com.valtech.training.springbootassignment.entities.Employee;
+import com.valtech.training.springbootassignment.services.DepartmentService;
 import com.valtech.training.springbootassignment.services.EmployeeService;
 
 @SpringBootTest
@@ -62,10 +63,17 @@ class SpringBootAssignmentApplicationTests {
 //    	orders.createOrders(new Orders(1,df.parse("12-11-2023")));
 //    }
 	
-	@Autowired 
-	private EmployeeService employeeService;
+//	@Autowired 
+//	private EmployeeService employeeService;
+//	
+//	@Test
+//	void testEmployee() {
+//	}
 	
+	@Autowired
+	private DepartmentService departmentService;
 	@Test
-	void testEmployee() {
+	void testDepartment() {
+		
 	}
 }
